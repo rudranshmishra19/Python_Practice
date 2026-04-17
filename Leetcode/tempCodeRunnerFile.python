@@ -1,0 +1,8 @@
+from collections import defaultdict
+anagrams=defaultdict(list)
+
+for word in ["eat","tea","tan","ate","nat","bat"]:
+    key=''.join(sorted(word))
+    anagrams[key].append(word)
+
+print(anagrams)

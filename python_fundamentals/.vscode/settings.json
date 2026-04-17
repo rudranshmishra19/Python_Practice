@@ -1,0 +1,6 @@
+{
+    "github.copilot.renameSuggestions.triggerAutomatically": false,
+    "github.copilot.editor.enableCodeActions": false,
+    "github.copilot.chat.copilotDebugCommand.enabled": false,
+    "github.copilot.editor.enableAutoCompletions": false
+}

@@ -1,0 +1,21 @@
+# class Animal:
+#     def speak(self):
+#         print("This animal makes a sound")
+
+class dog():
+    def speak(self):
+        print("The dog barks")
+
+class cat():
+    def speak(self):
+        print("The cat Meow")
+
+#creating an object
+# animal=Animal()
+
+
+Dog=dog()
+Dog.speak()
+
+Cat=cat()
+Cat.speak()

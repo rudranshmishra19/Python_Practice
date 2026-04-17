@@ -1,0 +1,132 @@
+import time
+import sys
+
+MAX_ATTEMPTS = 3
+
+# Define item structure as a list of dictionaries
+items = [
+    {"id": 1, "name": "Lays", "price": 5.0},
+    {"id": 2, "name": "Cookie", "price": 10.0},
+    {"id": 3, "name": "Cola", "price": 10.0},
+    {"id": 4, "name": "Cold Coffee", "price": 15.0},
+    {"id": 5, "name": "Buttermilk", "price": 15.0},
+    {"id": 6, "name": "Red Bull", "price": 30.0},
+]
+
+# List of valid vouchers
+valid_vouchers = {"RX885k", "JQ6973", "MX5555"}
+
+def animate_dots(message, duration=3):
+    print(message, end="", flush=True)
+    for _ in range(duration):
+        print(".", end="", flush=True)
+        time.sleep(0.5)
+    print()
+
+def display_list():
+    print("Displaying the updated list of items...")
+    for item in items:
+        print(f"{item['name']}: ${item['price']:.2f}")
+
+def loyalty_program():
+    print("Available Vouchers:")
+    for voucher in valid_vouchers:
+        print(voucher)
+
+def handle_voucher():
+    attempts = MAX_ATTEMPTS
+    while attempts > 0:
+        voucher = input(f"Enter your voucher (Attempts left {attempts}): ")
+        if voucher in valid_vouchers:
+            print("Redeemed successfully!")
+            return True
+        else:
+            print("Invalid voucher! Please try again.")
+        attempts -= 1
+    print("Voucher redemption failed.")
+    return False
+
+def handle_cash(price):
+    attempts = MAX_ATTEMPTS
+    while attempts > 0:
+        try:
+            money = float(input(f"Insert money (Price: ${price:.2f}): "))
+            if money >= price:
+                print(f"Payment successful! Change returned: ${money - price:.2f}")
+                return True
+            else:
+                print(f"Insufficient money! Attempts left: {attempts - 1}")
+        except ValueError:
+            print("Invalid input! Please enter a numeric value.")
+        attempts -= 1
+    print("Too many invalid attempts! Transaction cancelled.")
+    return False
+
+def payment_options(selected_item):
+    options = {1: "Cash", 2: "Voucher"}
+    for key, value in options.items():
+        print(f"Enter {key} for {value}")
+    
+    attempts = MAX_ATTEMPTS
+    while attempts > 0:
+        try:
+            method = int(input("Choose a payment method: "))
+            if method in options:
+                print(f"You selected: {options[method]}")
+                if method == 1:
+                    return handle_cash(selected_item["price"])
+                elif method == 2:
+                    return handle_voucher()
+            else:
+                print(f"Invalid selection! Please choose between 1-{len(options)}")
+        except ValueError:
+            print("Invalid input! Enter a numeric value.")
+        attempts -= 1
+    print("Too many invalid attempts! Returning to menu.")
+    return False
+
+def purchase_item():
+    for item in items:
+        print(f"Enter {item['id']} for {item['name']}: ${item['price']:.2f}")
+    
+    while True:
+        try:
+            item_id = int(input("Enter the ID of the item to purchase: "))
+            selected_item = next((item for item in items if item["id"] == item_id), None)
+            if selected_item:
+                animate_dots("Processing your request", 4)
+                if payment_options(selected_item):
+                    animate_dots("Dispensing your selected item", 4)
+                    print(f"Successfully dispensed: {selected_item['name']}")
+                else:
+                    print("Payment not completed. Cannot dispense item.")
+                break
+            else:
+                print("Invalid ID! Please choose a valid item ID.")
+        except ValueError:
+            print("Invalid input! Enter a numeric value.")
+
+def main():
+    menu_options = {
+        1: ("Display items", display_list),
+        2: ("Purchase item", purchase_item),
+        3: ("Loyalty program", loyalty_program),
+        4: ("Exit", lambda: sys.exit("Thanks for using our service! Have a great day."))
+    }
+    
+    while True:
+        for key, (desc, _) in menu_options.items():
+            print(f"Enter {key} for {desc}")
+        
+        try:
+            choice = int(input("Choose an option: "))
+            if choice in menu_options:
+                animate_dots("Processing", 2)
+                menu_options[choice][1]()
+            else:
+                print(f"Invalid selection! Please choose between 1-{len(menu_options)}")
+        except ValueError:
+            print("Invalid input! Enter a numeric value.")
+
+if __name__ == "__main__":
+    main()
