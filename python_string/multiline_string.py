@@ -61,4 +61,5 @@
 # numbers=123
 # print("{numbers}".format(numbers=numbers))
 
-print("this is fun".find("fun"))
+# print("this is fun".find("fun"))
+
